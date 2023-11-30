@@ -1,7 +1,11 @@
 <template>
   <div>
     <ul class="products">
-      <li class="product-item" v-for="(product, index) in products" :key="index">
+      <li
+        class="product-item"
+        v-for="(product, index) in productStore.products"
+        :key="index"
+      >
         <ProductInfo :product="product">
           <button class="cta" @click="addToCart(product)">Buy</button>
         </ProductInfo>
@@ -11,14 +15,24 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import ProductInfo from './product-info/ProductInfo.vue'
-import products from './product-data.js'
+import ProductInfo from "./product-info/ProductInfo.vue";
+import products from "./product-data.js";
+import { useCartStore } from "../stores/Cart";
+import { useProductStore } from "../stores/products";
 
-const cart = ref([])
+const cartStore = useCartStore();
+const productStore = useProductStore();
+productStore.getProducts();
 
 function addToCart(product) {
-  cart.value.push({ ...product })
+  // const newCart = [...cartStore.cart, product];
+  // cartStore.cart = newCart;
+  // cartStore.$patch({ cart: newCart });
+
+  // cartStore.$patch((state) => {
+  //   state.cart.push({ ...product });
+  // })
+  cartStore.productIds.push(product.id);
 }
 </script>
 

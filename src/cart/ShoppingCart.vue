@@ -11,23 +11,23 @@
         </ProductInfo>
       </li>
     </ul>
-    <div v-if="cart.length > 0" class="total">Total: {{ toCurrency(cartTotal) }}</div>
+    <div v-if="cart.length > 0" class="total">
+      Total: {{ toCurrency(cartTotal) }}
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { toCurrency } from '@/shared/formatters'
-import ProductInfo from '@/catalog/product-info/ProductInfo.vue'
-import products from '@/catalog/product-data.js'
+import { toCurrency } from "@/shared/formatters";
+import ProductInfo from "@/catalog/product-info/ProductInfo.vue";
+import { useCartStore } from "../stores/Cart";
+import { storeToRefs } from "pinia";
 
-const cart = ref([{ ...products[10] }, { ...products[3] }])
-const cartTotal = ref(0)
+const { cart, cartTotal, productIds } = storeToRefs(useCartStore());
 
 function removeFromCart(product) {
-  cart.value = cart.value.filter((p) => p !== product)
+  productIds.value = productIds.value.filter((id) => id !== product.id);
 }
-
 </script>
 
 <style scoped>
